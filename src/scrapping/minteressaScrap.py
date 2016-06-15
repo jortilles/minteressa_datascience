@@ -31,6 +31,10 @@ class MintScrap:
                        "header":{"title":"title", "contentLanguage":"contentLanguage", "contentType":"contentType", "description":"description", "author":"author", "copyright":"copyright", "generator":"generator", "subject":"subject", "abstract":"abstract", "topic":"topic" , "keywords":["keywords"]  },  \
                        "url": self.url  , \
                        "UUID": uuid.uuid4()  , \
+<<<<<<< HEAD
+                       "video": "no" , \
+=======
+>>>>>>> master
                        "schemaPresent": "no" \
                         },  \
                     "content":{ \
@@ -86,12 +90,29 @@ class MintScrap:
         self.getSoupLinks( soup)
         self.getImages(soup)
         self.checkSchema(html)
+<<<<<<< HEAD
+        self.checkVideo(html)
+        
+=======
+>>>>>>> master
         # get text
         text = soup.get_text()       
         self.getText(text)       
         
 
 
+<<<<<<< HEAD
+    def  checkVideo(self, html):   
+        if "youtube" in html:
+            self.data["metadata"]["video"] = True
+        else:
+            self.data["metadata"]["schemaPresent"] = False
+        if "avi" in html:
+            self.data["metadata"]["video"] = True
+            
+
+=======
+>>>>>>> master
     def  checkSchema(self, html):   
         if "itemscope" in html:
             self.data["metadata"]["schemaPresent"] = True
@@ -350,7 +371,11 @@ class MintScrap:
         
 
     def store(self):
+<<<<<<< HEAD
+        client = MongoClient('mongodb://pgds-minteressa-webdb:27017/')
+=======
         client = MongoClient('mongodb://localhost:27017/')
+>>>>>>> master
         db = client.urls
         collection = db.urls
         if collection.find_one( {"metadata.url": self.data["metadata"]["url"] }  ) :
