@@ -40,12 +40,8 @@ $ docker build -t minteressa-scrapper .
 
 
 ```bash
-<<<<<<< HEAD
 $ docker run --name pgds-minteressa-webdb -d mongo:3.2
 $  docker run -it  --link pgds-minteressa-webdb:pgds-minteressa-webdb  minteressa-scrapper /bin/bash
-=======
-$  docker run -it  minteressa-scrapper /bin/bash
->>>>>>> master
 ```
 
 
