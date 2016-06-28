@@ -14,6 +14,7 @@ from urlparse import urlparse
 from bs4 import BeautifulSoup
 import uuid
 from pymongo import MongoClient
+from mintHtmlClean import MintHtmlClean
 #from urllib import urlopen
 
 from os import path
@@ -24,28 +25,31 @@ class MintScrap:
 
     def __init__(self, url ):
         self.url = url
-        
         self.data = {  "metadata":{\
-                       "whois":{"whoisName":"name", "whoisOrg":"org", "whoisCity":"city", "whoisCountry":"ES"} ,   \
-                       "urlparse":{"scheme":"scheme", "hostname":"hostname", "netloc":"netloc", "port":"port", "path":"path", "params":"params", "query":"query", "fragment":"fragment", "username":"username", "password":"password" } , \
-                       "header":{"title":"title", "contentLanguage":"contentLanguage", "contentType":"contentType", "description":"description", "author":"author", "copyright":"copyright", "generator":"generator", "subject":"subject", "abstract":"abstract", "topic":"topic" , "keywords":["keywords"]  },  \
-                       "url": self.url  , \
-                       "UUID": uuid.uuid4()  , \
-                       "video": "no" , \
-                       "schemaPresent": "no" \
-                        },  \
-                    "content":{ \
-                        "text": {"text":"text", "length":55 }, \
-                        "links": { "total":[], "internal":[],"external":[], "social":{"twitter":[], "facebook":[], "reddit":[], "meneame":[] }} , \
-                        "imgs":[{ "file":"file", "alt":"alt", "title":"title", "width":"widht", "height":"height"}] \
-                    } \
-                }
-        
-        self.paraseUrl()
-        self.whois()
-        self.soup()
-        #self.info() 
-        self.store()
+                           "whois":{"whoisName":"name", "whoisOrg":"org", "whoisCity":"city", "whoisCountry":"ES"} ,   \
+                           "urlparse":{"scheme":"scheme", "hostname":"hostname", "netloc":"netloc", "port":"port", "path":"path", "params":"params", "query":"query", "fragment":"fragment", "username":"username", "password":"password" } , \
+                           "header":{"title":"title", "contentLanguage":"contentLanguage", "contentType":"contentType", "description":"description", "author":"author", "copyright":"copyright", "generator":"generator", "subject":"subject", "abstract":"abstract", "topic":"topic" , "keywords":["keywords"]  },  \
+                           "url": self.url  , \
+                           "UUID": uuid.uuid4()  , \
+                           "video": "no" , \
+                           "schemaPresent": "no" \
+                            },  \
+                        "content":{ \
+                            "text": {"text":"text", "length":55 }, \
+                            "links": { "total":[], "internal":[],"external":[], "social":{"twitter":[], "facebook":[], "reddit":[], "meneame":[] }} , \
+                            "imgs":[{ "file":"file", "alt":"alt", "title":"title", "width":"widht", "height":"height"}] \
+                        } \
+                    }
+        if self.check(url):
+            self.paraseUrl()
+            self.whois()
+            self.soup()
+            #self.info() 
+            self.store()
+        else:
+            self.url = False
+            self.data["metadata"]["UUID"] = False
+            
         
     def getUUID(self):
         return self.data["metadata"]["UUID"]
@@ -88,6 +92,7 @@ class MintScrap:
         self.getImages(soup)
         self.checkSchema(html)
         self.checkVideo(html)
+        #txt = MintHtmlClean().clean(html)
         # get text
         text = soup.get_text()       
         self.getText(text)       
@@ -362,7 +367,9 @@ class MintScrap:
 
     def store(self):
 
-        client = MongoClient('mongodb://pgds-minteressa-webdb:27017/')
+        #client = MongoClient('mongodb://pgds-minteressa-webdb:27017/')
+        client = MongoClient('mongodb://localhost:27017/')
+        
         db = client.urls
         collection = db.urls
         if collection.find_one( {"metadata.url": self.data["metadata"]["url"] }  ) :
@@ -371,7 +378,16 @@ class MintScrap:
             collection.insert(self.data)
             print self.data["metadata"]["url"] , " stored "
         
-
-
-
+    def check(self, url):
+        res = False
+        client = MongoClient('mongodb://localhost:27017/')
+        db = client.urls
+        collection = db.urls
+        if collection.find_one( {"metadata.url": url }  ) :
+            print url, " already exists "
+            res = False
+        else : 
+            print "Fresh meat " , url
+            res = True
+        return res
 

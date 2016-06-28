@@ -19,6 +19,7 @@ RUN pip install html5lib
 RUN pip install requests
 RUN pip install selenium
 RUN pip install pymongo
+RUN pip pip install pykafka
 #RUN brew install phantomjs
 #RUN pip install pil
 
