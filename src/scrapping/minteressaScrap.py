@@ -30,7 +30,7 @@ class MintScrap:
                            "urlparse":{"scheme":"scheme", "hostname":"hostname", "netloc":"netloc", "port":"port", "path":"path", "params":"params", "query":"query", "fragment":"fragment", "username":"username", "password":"password" } , \
                            "header":{"title":"title", "contentLanguage":"contentLanguage", "contentType":"contentType", "description":"description", "author":"author", "copyright":"copyright", "generator":"generator", "subject":"subject", "abstract":"abstract", "topic":"topic" , "keywords":["keywords"]  },  \
                            "url": self.url  , \
-                           "UUID": uuid.uuid4()  , \
+                           #"UUID": uuid.uuid4()  , \
                            "video": "no" , \
                            "schemaPresent": "no" \
                             },  \
@@ -50,6 +50,19 @@ class MintScrap:
             self.url = False
             self.data["metadata"]["UUID"] = False
             
+
+
+    def get(self):
+        #self.info()
+        return  self.data 
+
+    def forceScrap(self, url):
+            self.url = url            
+            self.paraseUrl()
+            self.whois()
+            self.soup()
+            self.info() 
+
         
     def getUUID(self):
         return self.data["metadata"]["UUID"]
@@ -389,5 +402,6 @@ class MintScrap:
         else : 
             print "Fresh meat " , url
             res = True
-        return res
+        #return res
+        return True
 

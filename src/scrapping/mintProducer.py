@@ -7,6 +7,7 @@ Created on Sun Jun 26 22:06:27 2016
 
 from pykafka import KafkaClient
 import unicodedata
+import json
 
 class MintProducer:
     def __init__(self  ):
@@ -25,7 +26,12 @@ class MintProducer:
               print url, " appended to crawled_urls"
               
  
-
+    def returnTweet(self, tweet):      
+        mi_tweet =   json.dumps(tweet)
+        self.topic = self.client.topics['crawled_tweets']
+        with self.topic.get_sync_producer() as producer:
+             producer.produce(tweet)
+             print mi_tweet, " appended to crawled_tweets"
 
 
 #mp = MintProducer()

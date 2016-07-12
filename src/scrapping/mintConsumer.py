@@ -11,6 +11,7 @@ from pprint import pprint
 
 class MintConsumer:
     urlList = list()
+    tweetList = list()
     def __init__(self  ):
         self.client = KafkaClient(hosts="127.0.0.1:9092,127.0.0.1:9093")
         self.topic = self.client.topics['unique_tweets']
@@ -34,6 +35,13 @@ class MintConsumer:
  
 
 
+    def getTweetsFromKafka(self):
+        self.consumer = self.topic.get_simple_consumer(consumer_timeout_ms=3000)
+        for message in self.consumer:
+           self.tweetList.append( message.value)
+        return self.tweetList
+        
+        
 
 class MintParse:
     urlList = list()
