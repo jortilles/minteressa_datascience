@@ -47,33 +47,4 @@ for tweet  in tweets:
     mp.returnTweet( my_tweet )
 print 'done'
 
-        
-##        if ms.getUUID():
-##            #image =   str(   ms.getUUID()  ) + ".png"
-##            #photo = MintScrapSnapShoot( url, image) 
-##            #mp.append(url)
-##            tweetsUrls.append( ms.get() )
-##        else:
-##            print "no uuid.... no photo"
-#            
-#        
-#        print "appendig info to tweet"
-#        print "tweets urls " , tweetsUrls
-#        for elment in tweetsUrls:
-#            my_tweet['Minteressa'].append(  elment ) 
-#        print "updating the tweet"
-#       
-#        mp.returnTweet( my_tweet )
-#        print my_tweet
-#        #except:
-#        #    print "error processing ", url 
 
-
-
-
-
-
-
-
-#ms = MintScrap("http://www.jortilles.com")
-#ms.forceScrap("http://www.jortilles.com")
